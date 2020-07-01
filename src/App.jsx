@@ -1,68 +1,103 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
 import shortid from 'shortid';
+import {firebase} from './utils/firebase';
+import { firestore } from 'firebase';
 
 function App() {
-
-  const [tarea, setTarea] = useState('');
-  const [tareas, setTareas] = useState([]);
+  const [tareasdb, setTareasDb] = useState([]);
+  const [tareadb, setTareaDb] = useState('');
+  
   const [modoEdicion, setModoEdicion] = useState(false);
   const [stateId, setStateId] = useState('');
   const [error, setError] = useState(null);
 
   const listaDeTareas = [];
 
-  const agregarTarea = (e)=>{
+  const agregarTareadb = async (e)=>{
     e.preventDefault();
-    if(!tarea.trim()){
+    if(!tareadb.trim()){
       //console.log("Ingrese una tarea");
       setError('Debe ingresar una tarea');
       return 0;
     }
     
-    setTareas([
-      ...tareas,
-      {id: shortid.generate(), tarea: tarea}
-    ])
+    try {
+      const db = firebase.firestore();
+      const nuevaTareaDb = {
+        name: tareadb,
+        fecha: Date.now()
+      }
+      const data = await db.collection('tareas').add(nuevaTareaDb);
+      setTareasDb ([
+        ...tareasdb,
+        {...nuevaTareaDb, id: data.id}
+      ])
+      setTareaDb('');
 
-    setTarea('');
-    setError('');
+    } catch (error) {
+      console.log(error);
+    }
+
   }
 
-  const eliminarTarea = (id)=>{
-    //console.log(id);
-    const arrayFiltrado = tareas.filter(item=>item.id !== id);
-    setTareas(arrayFiltrado);
+  const eliminarTareaDb = async (id)=>{
+    try {
+      const db = firebase.firestore();
+      await db.collection('tareas').doc(id).delete();
+      const arrayFiltrado = tareasdb.filter(item=>item.id !==id);
+      setTareasDb(arrayFiltrado);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  const editar = (tarea) =>{
-    //console.log(tarea);
-
+  const activarEdicion = (item) =>{
     setModoEdicion(true);
-
-    setTarea(tarea.tarea);
-    setStateId(tarea.id);
+    setTareaDb(item.name);
+    setStateId(item.id);
   }
 
-  const editarTarea = (e) =>{
+  const editarTareaDb = async(e) =>{
     e.preventDefault();
-    if(!tarea.trim()){
+    if(!tareadb.trim()){
       setError('Debe ingresar una tarea');
-      //console.log("Elemento vacio");
       return 0;
     }
 
-    const arrayEditado = tareas.map(item => 
-      (item.id === stateId ? {id:stateId, tarea:tarea} : item )
-    );
+    try {
+      const db = firebase.firestore();
+      await db.collection('tareas').doc(stateId).update({
+        name: tareadb
+      });
+      const arrayEditado = tareasdb.map(item=> (
+        item.id ===stateId ? {id:stateId, fecha: item.fecha, name: tareadb} : item
+      ));
+      setTareasDb(arrayEditado);
+      setModoEdicion(false);
+      setTareaDb('');
+      setStateId('');
 
-    setTareas(arrayEditado);
-    setModoEdicion(false);
-    setTarea('');
-    setStateId('');
-    setError('');
-
+    } catch (error) {
+      console.log(error);
+    }
   }
+
+  useEffect(()=>{
+    const obtenerDatos = async()=>{
+      try {
+        const db = firebase.firestore();
+        const data = await db.collection('tareas').get();
+        //console.log(data.docs);
+        const arrayData = data.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        console.log(arrayData);
+        setTareasDb(arrayData);
+
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    obtenerDatos();
+  }, [])
 
   return (
     <div className="container mt-4">
@@ -72,13 +107,13 @@ function App() {
         <div className="col-8">
           <h4 className="text-center">Tareas pendientes</h4>
           {
-            tareas.length===0 ? (<p>No hay tareas pendientes</p>):(
+            tareasdb.length===0 ? (<p>No hay tareas pendientes</p>):(
               <ul className="list-group">
-                { tareas.map((item)=> (
+                { tareasdb.map((item)=> (
                   <li className="list-group-item" key={item.id}>
-                    <span className="lead">{item.tarea}</span>
-                    <button className="btn btn-danger btn-sm float-right mx-2" onClick={()=>eliminarTarea(item.id)}>Eliminar</button>
-                    <button className="btn btn-warning btn-sm float-right" onClick={()=>editar(item)}>Editar</button>
+                    <span className="lead">{item.name}</span>
+                    <button className="btn btn-danger btn-sm float-right mx-2" onClick={()=>eliminarTareaDb(item.id)}>Eliminar</button>
+                    <button className="btn btn-warning btn-sm float-right" onClick={()=>activarEdicion(item)}>Editar</button>
                   </li>
                 )) 
                 } 
@@ -92,14 +127,14 @@ function App() {
             modoEdicion ? 'Editar tarea':'Cargar tareas'
           }
         </h4>
-        <form onSubmit={modoEdicion ? editarTarea: agregarTarea}>
-          {error ? <span class="text-danger">{error}</span> : null}
+        <form onSubmit={modoEdicion ? editarTareaDb: agregarTareadb}>
+          {error ? <span className="text-danger">{error}</span> : null}
           <input 
             type="text" 
             className="form-control mb-2" 
             placeholder="Ingresar tarea" 
-            onChange={ (e)=> setTarea(e.target.value) }
-            value={tarea}
+            onChange={ (e)=> setTareaDb(e.target.value) }
+            value={tareadb}
           />
 
           {
