@@ -3,6 +3,9 @@ import shortid from 'shortid';
 import {firebase} from './utils/firebase';
 import { firestore } from 'firebase';
 
+import moment from 'moment';
+import 'moment/locale/es';
+
 function App() {
   const [tareasdb, setTareasDb] = useState([]);
   const [tareadb, setTareaDb] = useState('');
@@ -26,7 +29,7 @@ function App() {
       const nuevaTareaDb = {
         name: tareadb,
         fecha: Date.now()
-      }
+      };
       const data = await db.collection('tareas').add(nuevaTareaDb);
       setTareasDb ([
         ...tareasdb,
@@ -89,7 +92,7 @@ function App() {
         const data = await db.collection('tareas').get();
         //console.log(data.docs);
         const arrayData = data.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        console.log(arrayData);
+        
         setTareasDb(arrayData);
 
       } catch (error) {
@@ -105,7 +108,7 @@ function App() {
       <hr/>
       <div className="row">
         <div className="col-8">
-          <h4 className="text-center">Tareas pendientes</h4>
+          <h4 className="text-center mb-4">Tareas pendientes</h4>
           {
             tareasdb.length===0 ? (<p>No hay tareas pendientes</p>):(
               <ul className="list-group">
@@ -114,6 +117,7 @@ function App() {
                     <span className="lead">{item.name}</span>
                     <button className="btn btn-danger btn-sm float-right mx-2" onClick={()=>eliminarTareaDb(item.id)}>Eliminar</button>
                     <button className="btn btn-warning btn-sm float-right" onClick={()=>activarEdicion(item)}>Editar</button>
+                    <small className="float-right mr-4 mt-3">{moment(item.fecha).format('L')} - {moment(item.fecha).format('LT')} hs.</small>
                   </li>
                 )) 
                 } 
@@ -122,7 +126,7 @@ function App() {
           }
         </div>
         <div className="col-4">
-        <h4 className="text-center">
+        <h4 className="text-center mb-4">
           {
             modoEdicion ? 'Editar tarea':'Cargar tareas'
           }
