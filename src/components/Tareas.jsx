@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {db, auth} from '../utils/firebase';
+import { db } from '../utils/firebase';
 import Title from './Title';
 import Subtitle from './Subtitle';
 import ButtonSubmit from './ButtonSubmit';
@@ -16,7 +16,7 @@ const Tareas = ()=>{
     const [stateId, setStateId] = useState('');
     const [error, setError] = useState(null);
 
-    const listaDeTareas = [];
+    //const listaDeTareas = [];
 
 
     const agregarTareadb = async (e)=>{
