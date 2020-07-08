@@ -29,7 +29,7 @@ function App() {
 
 
   return firebaseUser !== false ?(
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Navbar firebaseUser={firebaseUser} />
       <div className="container">
         <Switch>
@@ -44,9 +44,6 @@ function App() {
           </Route>
           <Route path="/mistareas">
             <Admin />
-          </Route>
-          <Route path="/form">
-            <Form />
           </Route>
         </Switch>
       </div>
