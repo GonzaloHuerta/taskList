@@ -8,7 +8,7 @@ import ButtonAction from './ButtonAction';
 import moment from 'moment';
 import 'moment/locale/es';
 
-const Tareas = ()=>{
+const Tareas = (props)=>{
     const [tareasdb, setTareasDb] = useState([]);
     const [tareadb, setTareaDb] = useState('');
   
@@ -31,7 +31,7 @@ const Tareas = ()=>{
             name: tareadb,
             fecha: Date.now()
         };
-        const data = await db.collection('tareas').add(nuevaTareaDb);
+        const data = await db.collection(props.user.email).add(nuevaTareaDb);
         setTareasDb ([
             ...tareasdb,
             {...nuevaTareaDb, id: data.id}
@@ -45,7 +45,7 @@ const Tareas = ()=>{
 
     const eliminarTareaDb = async (id)=>{
         try {
-        await db.collection('tareas').doc(id).delete();
+        await db.collection(props.user.email).doc(id).delete();
         const arrayFiltrado = tareasdb.filter(item=>item.id !==id);
         setTareasDb(arrayFiltrado);
         } catch (error) {
@@ -67,7 +67,7 @@ const Tareas = ()=>{
         }
 
         try {
-        await db.collection('tareas').doc(stateId).update({
+        await db.collection(props.user.email).doc(stateId).update({
             name: tareadb
         });
         const arrayEditado = tareasdb.map(item=> (
@@ -86,7 +86,7 @@ const Tareas = ()=>{
     useEffect(()=>{
         const obtenerDatos = async()=>{
         try {
-            const data = await db.collection('tareas').get();
+            const data = await db.collection(props.user.email).get();
             const arrayData = data.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             
             setTareasDb(arrayData);
@@ -96,16 +96,20 @@ const Tareas = ()=>{
         }
         }
         obtenerDatos();
+
     }, [])
+
     return(
         <div className="mt-4">
             <Title title="Lista de tareas"/>
             <hr/>
+
             <div className="row">
                 <div className="col-8">
                     <Subtitle subtitle="Tareas pendientes"/>
-                    {
-                        tareasdb.length===0 ? (<p>No hay tareas pendientes</p>):(
+                    { 
+                        tareasdb.length === 0 ? (<p>No hay tareas pendientes</p>):(
+                            
                         <ul className="list-group">
                             { tareasdb.map((item)=> (
                             <li className="list-group-item" key={item.id}>
@@ -150,6 +154,7 @@ const Tareas = ()=>{
                     </form>
                 </div>
             </div>
+            
         </div>
     )
 }

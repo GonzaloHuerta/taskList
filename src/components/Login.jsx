@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import Title from '../components/Title';
 import Error from '../components/Error';
 import ButtonSubmit from '../components/ButtonSubmit';
@@ -10,6 +10,12 @@ const Login = (props)=>{
     const[pass, setPass] = useState('');
     const[error, setError] = useState('');
     const[esRegistro, setEsRegistro] = useState(false);
+
+    useEffect( ()=>{
+        if(auth.currentUser){
+            props.history.push('/mistareas');
+        }
+    }, [props.history])
 
     const procesarDatosForm = (e)=>{
         e.preventDefault();
@@ -41,6 +47,10 @@ const Login = (props)=>{
                 email: res.user.email,
                 uid: res.user.uid
             })
+            
+            if(auth.currentUser){
+                props.history.push('/admin');
+            }
             setEmail('');
             setPass('');
             setError('');
@@ -58,11 +68,10 @@ const Login = (props)=>{
     const login = useCallback( async()=>{
         try {
             await auth.signInWithEmailAndPassword(email, pass);
-            
             setEmail('');
             setPass('');
             setError('');
-            props.history.push('/admin');
+            props.history.push('/mistareas');
         } catch (error) {
             if(error.code === "auth/invalid-email"){
                 setError("El email es invalido");

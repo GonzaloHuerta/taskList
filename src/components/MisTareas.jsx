@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import Title from '../components/Title';
+import Title from './Title';
+import Tareas from './Tareas';
 import { auth } from '../utils/firebase';
 import { withRouter } from 'react-router-dom';
 
@@ -18,11 +19,9 @@ const Admin = (props)=>{
     }, [props.history])
     return(
         <div className="mt-4">
-            <Title title="Admin"/>
-            <hr/>
             {
                 user !==null ? (
-                    <h2>Bienvenido al admin {user.email} </h2>
+                    <Tareas user={user}/>
                 ):null
             }
         </div>

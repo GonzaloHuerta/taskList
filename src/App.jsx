@@ -3,7 +3,7 @@ import Tareas from './components/Tareas';
 import Navbar from './components/Navbar';
 import Inicio from './components/Inicio';
 import Login from './components/Login';
-import Admin from './components/Admin';
+import Admin from './components/MisTareas';
 import Form from './components/Form';
 
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
@@ -42,7 +42,7 @@ function App() {
           <Route path="/login">
             <Login />
           </Route>
-          <Route path="/admin">
+          <Route path="/mistareas">
             <Admin />
           </Route>
           <Route path="/form">

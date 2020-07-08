@@ -20,22 +20,18 @@ const Navbar = (props)=>{
                     <li className="nav-item">
                         <NavLink to="/" className="nav-link" activeClassName="active" exact>Inicio</NavLink>
                     </li>
-                    <li className="nav-item">
-                        <NavLink to="/tareas" className="nav-link" activeClassName="active">Lista de tareas</NavLink>
-                    </li>
-
                     {
                         props.firebaseUser !==null ? (
                             <li className="nav-item">
-                                <NavLink to="/admin" className="nav-link" activeClassName="active">Admin</NavLink>
-                            </li>
+                            <NavLink to="/mistareas" className="nav-link" activeClassName="active">Mis tareas</NavLink>
+                        </li>
                         ) : null
                     }
-                    
+
                     <li className="nav-item">
                         {
                             props.firebaseUser !== null ? (
-                               <NavLink to="#" className="nav-link" activeClassName="active" onClick={()=>logout()}>Logout</NavLink>
+                               <NavLink to="/login" className="nav-link" onClick={()=>logout()}>Logout</NavLink>
                             ): (
                                 <NavLink to="/login" className="nav-link" activeClassName="active">Login</NavLink>
                             )
