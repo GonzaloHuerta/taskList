@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import Title from '../components/Title';
 import Error from '../components/Error';
 import ButtonSubmit from '../components/ButtonSubmit';
+import ButtonAction from '../components/ButtonAction';
 import { auth, db } from '../utils/firebase';
 import { withRouter } from 'react-router-dom';
 
@@ -122,13 +123,23 @@ const Login = (props)=>{
                                 <ButtonSubmit class="btn btn-dark btn-lg btn-block" text="Ingresar"/>
 
                         }
-                       
-                        <button 
-                            className="btn btn-info btn-sm btn-block" 
-                            onClick={(e)=> setEsRegistro(!esRegistro)}
-                            type="button">
-                            {esRegistro ? "Ya tienes cuenta?":"Crear nueva cuenta"}
-                        </button>
+                        <ButtonAction 
+                        class="btn btn-info btn-sm btn-block"
+                        onClick={(e)=> setEsRegistro(!esRegistro)}
+                        type="button"
+                        text={esRegistro ? "Ya tienes cuenta?":"Crear nueva cuenta"}
+                        />
+                        {
+                        !esRegistro ? (
+                            <ButtonAction 
+                            class="btn btn-sm btn-secondary btn-block mt-2"
+                            onClick={(e)=> props.history.push('/reset')}
+                            type="button"
+                            text="Recuperar contraseña"
+                            />
+                        ) : null
+                        }
+                        
                     </form>
                 </div>
             </div>

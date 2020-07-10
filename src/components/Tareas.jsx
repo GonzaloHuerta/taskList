@@ -4,6 +4,7 @@ import Title from './Title';
 import Subtitle from './Subtitle';
 import ButtonSubmit from './ButtonSubmit';
 import ButtonAction from './ButtonAction';
+import Cargando from './Cargando';
 
 import moment from 'moment';
 import 'moment/locale/es';
@@ -15,6 +16,7 @@ const Tareas = (props)=>{
     const [modoEdicion, setModoEdicion] = useState(false);
     const [stateId, setStateId] = useState('');
     const [error, setError] = useState(null);
+    const [existenTareas, setExistenTareas] = useState(false);
 
     //const listaDeTareas = [];
 
@@ -90,13 +92,14 @@ const Tareas = (props)=>{
             const arrayData = data.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             
             setTareasDb(arrayData);
+            setExistenTareas(true);
 
         } catch (error) {
             console.log(error);
         }
         }
         obtenerDatos();
-
+    
     }, [])
 
     return(
@@ -107,7 +110,7 @@ const Tareas = (props)=>{
             <div className="row">
                 <div className="col-8">
                     <Subtitle subtitle="Tareas pendientes"/>
-                    { 
+                    { existenTareas === false ? <Cargando /> : ( 
                         tareasdb.length === 0 ? (<p>No hay tareas pendientes</p>):(
                             
                         <ul className="list-group">
@@ -129,7 +132,7 @@ const Tareas = (props)=>{
                             )) 
                             } 
                         </ul>
-                        )
+                        ))
                     }
                 </div>
                 <div className="col-4">

@@ -4,7 +4,7 @@ import Navbar from './components/Navbar';
 import Inicio from './components/Inicio';
 import Login from './components/Login';
 import Admin from './components/MisTareas';
-import Form from './components/Form';
+import ResetPass from './components/ResetPass';
 
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { auth } from './utils/firebase';
@@ -26,8 +26,6 @@ function App() {
     })
   }, [])
 
-
-
   return firebaseUser !== false ?(
     <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Navbar firebaseUser={firebaseUser} />
@@ -44,6 +42,9 @@ function App() {
           </Route>
           <Route path="/mistareas">
             <Admin />
+          </Route>
+          <Route path="/reset">
+            <ResetPass />
           </Route>
         </Switch>
       </div>
