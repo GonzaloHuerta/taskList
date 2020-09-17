@@ -88,7 +88,9 @@ const Tareas = (props)=>{
     useEffect(()=>{
         const obtenerDatos = async()=>{
         try {
-            const data = await db.collection(props.user.email).get();
+            const data = await db.collection(props.user.email)
+            .orderBy('fecha', 'desc')
+            .get();
             const arrayData = data.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             
             setTareasDb(arrayData);
