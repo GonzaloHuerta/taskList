@@ -32,7 +32,7 @@ function App() {
       <div className="container">
         <Switch>
           <Route path="/" exact>
-            <Inicio />
+            <Inicio firebaseUser={firebaseUser} />
           </Route>
           <Route path="/tareas">
             <Tareas />

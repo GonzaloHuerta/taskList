@@ -9,11 +9,11 @@ const Admin = (props)=>{
 
     useEffect( ()=>{
         if(auth.currentUser){
-            //console.log("existe un usuario logeado");
+            //console.log("existe un usuario logueado");
             setUser(auth.currentUser);
             //console.log(user)
         }else{
-            //console.log("No existe usuario logeado");
+            //console.log("No existe usuario logueado");
             props.history.push('/login');
         }
     }, [props.history])
