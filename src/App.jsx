@@ -5,6 +5,7 @@ import Inicio from './components/Inicio';
 import Login from './components/Login';
 import Admin from './components/MisTareas';
 import ResetPass from './components/ResetPass';
+import Cargando from './components/Cargando';
 
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { auth } from './utils/firebase';
@@ -51,7 +52,10 @@ function App() {
     </BrowserRouter>
     
   ) : (
-    <p>Cargando...</p>
+    <div>
+      
+      <Cargando />
+    </div>
   )
 }
 
