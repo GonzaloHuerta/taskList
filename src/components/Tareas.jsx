@@ -115,7 +115,7 @@ const Tareas = (props)=>{
                     { existenTareas === false ? <Cargando /> : ( 
                         tareasdb.length === 0 ? (<p>No hay tareas pendientes</p>):(
                             
-                        <ul className="list-group">
+                        <ul className="list-group mb-4">
                             { tareasdb.map((item)=> (
                             <li className="list-group-item" key={item.id}>
                                 <span className="lead">{item.name}</span>
