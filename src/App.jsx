@@ -10,6 +10,8 @@ import Cargando from './components/Cargando';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { auth } from './utils/firebase';
 
+import AddToHomeScreen from '@ideasio/add-to-homescreen-react';
+
 
 function App() {
   
@@ -29,6 +31,7 @@ function App() {
 
   return firebaseUser !== false ?(
     <BrowserRouter basename={process.env.PUBLIC_URL}>
+      <AddToHomeScreen displayPace={0}/>
       <Navbar firebaseUser={firebaseUser} />
       <div className="container">
         <Switch>

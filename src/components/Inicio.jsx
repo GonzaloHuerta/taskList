@@ -6,7 +6,7 @@ const Inicio = (props)=>{
         <div className="mt-4">
             {
                 props.firebaseUser !==null ? (
-                <h2 className="text-center">Bienvenido a TaskList 2.0, <span className="username-home"><i>{props.firebaseUser.email}</i></span></h2>
+                <h2 className="text-center">Bienvenido a TaskList 2.0, <br /> <span className="username-home"><i>{props.firebaseUser.email}</i></span></h2>
                 ):( <h2 className="text-center">Bienvenido a TaskList 2.0</h2>)
             }
             <hr/>
