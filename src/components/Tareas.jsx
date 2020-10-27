@@ -110,7 +110,7 @@ const Tareas = (props)=>{
             <hr/>
 
             <div className="row">
-                <div className="col-8">
+                <div className="col-12 col-md-8 order-2">
                     <Subtitle subtitle="Tareas pendientes"/>
                     { existenTareas === false ? <Cargando /> : ( 
                         tareasdb.length === 0 ? (<p>No hay tareas pendientes</p>):(
@@ -137,7 +137,7 @@ const Tareas = (props)=>{
                         ))
                     }
                 </div>
-                <div className="col-4">
+                <div className="col-12 col-md-4 order-1 mb-4">
                     <Subtitle subtitle={modoEdicion ? 'Editar tarea':'Cargar tareas'}/>
                     <form onSubmit={modoEdicion ? editarTareaDb: agregarTareadb}>
                         {error ? <span className="text-danger">{error}</span> : null}

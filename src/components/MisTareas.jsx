@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Title from './Title';
 import Tareas from './Tareas';
 import { auth } from '../utils/firebase';
 import { withRouter } from 'react-router-dom';

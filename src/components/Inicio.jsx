@@ -1,6 +1,5 @@
 import React from 'react';
-import Title from '../components/Title';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const Inicio = (props)=>{
     return(
